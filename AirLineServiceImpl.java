@@ -33,5 +33,14 @@ public class AirLineServiceImpl implements IAirLineService{
 	public Double findBusSeatFare(String flightno) throws AirLineException{
 		return dao.findBusSeatFare(flightno);
 	}
+	@Override
+	public int getBookingid() throws AirLineException{
+		// TODO Auto-generated method stub
+		return dao.getBookingid();
+	}
+	@Override
+	public void updateSeats(String string, String class_type, int no_of_passengers) throws AirLineException{
+		dao.updateSeats(string, class_type, no_of_passengers);	
+	}
 
 }
