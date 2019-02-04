@@ -1,8 +1,14 @@
 package com.cg.airline.presentation;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
+
+
+
+
 
 import com.cg.airline.beans.AirLineBookInfoDTO;
 import com.cg.airline.exception.AirLineException;
@@ -13,14 +19,14 @@ public class AirLineMain {
 	public static Scanner in;
 	public static AirLineServiceImpl service = new AirLineServiceImpl();
 
-	public static void main(String[] args) throws AirLineException {
+	public static void main(String[] args) throws AirLineException, ParseException {
 		in = new Scanner(System.in);
 		System.out
 				.println("------:Welcome to The AirLine Reservation System:-------");
 		String choice = "initial";
 		while (!choice.equals("4")) {
 			System.out.println("Enter Your choice: ");
-			System.out.println("1. User/ customer");
+			System.out.println("1. customer");
 			System.out.println("2. Admin");
 			System.out.println("3. Airline Executive");
 			System.out.println("4. Exit");
@@ -46,7 +52,7 @@ public class AirLineMain {
 		}
 	}
 
-	static Boolean getUser() throws AirLineException {
+	static Boolean getUser() throws AirLineException, ParseException {
 
 		in = new Scanner(System.in);
 		String choice = "initial";
@@ -76,7 +82,7 @@ public class AirLineMain {
 		return true;
 	}
 
-	static void bookTicket() throws AirLineException {
+	static void bookTicket() throws AirLineException, ParseException {
 
 		int no_of_passengers;
 		String class_type;
@@ -89,6 +95,8 @@ public class AirLineMain {
 		String custMail;
 		Double firstSeatFare;
 		Double busSeatFare;
+		String booking_date;
+		int booking_id;
 		AirLineBookInfoDTO dto = new AirLineBookInfoDTO();
 
 		System.out.println("Enter Source city");
@@ -98,37 +106,39 @@ public class AirLineMain {
 
 		ArrayList<AirLineFlightInfoDTO> airDto = new ArrayList<AirLineFlightInfoDTO>();
 		airDto = service.showFlights(src_city, dest_city);
-		System.out.println("FlightNo  AirLine  DeptCity  ArrCity  DeptDate  ArrDate  DeptTime  ArrTime  FirstFare  BusFare");
-		if(airDto != null){
-			
+		System.out
+				.println("FlightNo  AirLine  DeptCity  ArrCity  DeptDate  ArrDate  DeptTime  ArrTime  FirstFare  BusFare");
+		if (airDto != null) {
 			Iterator<AirLineFlightInfoDTO> i = airDto.iterator();
-			while(i.hasNext()){
-				AirLineFlightInfoDTO obj=(AirLineFlightInfoDTO)i.next();
-				System.out.print(obj.getFlightNo()+"	");
-				System.out.print(obj.getAirLine()+"	 ");
-				System.out.print(obj.getDept_city()+"	");
-				System.out.print(obj.getArr_city()+"	");
-				System.out.print(obj.getDept_date()+"	");
-				System.out.print(obj.getArr_date()+"	");
-				System.out.print(obj.getDept_time()+"	");
-				System.out.print(obj.getArr_time()+"	");
-				System.out.print(obj.getFirst_seats_fare()+"	");
-				System.out.print(obj.getBus_seats_fare()+"\n");
+			while (i.hasNext()) {
+				AirLineFlightInfoDTO obj = (AirLineFlightInfoDTO) i.next();
+				System.out.print(obj.getFlightNo() + "	");
+				System.out.print(obj.getAirLine() + "	 ");
+				System.out.print(obj.getDept_city() + "	");
+				System.out.print(obj.getArr_city() + "	");
+				System.out.print(obj.getDept_date() + "	");
+				System.out.print(obj.getArr_date() + "	");
+				System.out.print(obj.getDept_time() + "	");
+				System.out.print(obj.getArr_time() + "	");
+				System.out.print(obj.getFirst_seats_fare() + "	");
+				System.out.print(obj.getBus_seats_fare() + "\n");
 			}
 			System.out.println();
-		}else
-		{
+		} else {
 			System.out.println("Not Available");
 		}
-		
+
 		System.out.println("Enter  flight Number");
 		flightno = in.next();
-		firstSeatFare=service.findFirstSeatFare(flightno);
-		busSeatFare=service.findBusSeatFare(flightno);
-		
+		firstSeatFare = service.findFirstSeatFare(flightno);
+		busSeatFare = service.findBusSeatFare(flightno);
+
 		System.out.println("Enter email");
 		custMail = in.next();
-
+		
+		System.out.println("Enter Date");
+		booking_date = in.next();
+		
 		System.out.println("Enter no of passenegers");
 		no_of_passengers = in.nextInt();
 
@@ -154,7 +164,6 @@ public class AirLineMain {
 		System.out.println("Enter Seat Numbers");
 		seat_number = in.next();
 
-
 		System.out.println("Enter creditcard info");
 		creditcard_info = in.next();
 
@@ -167,6 +176,13 @@ public class AirLineMain {
 		dto.setNo_of_passengers(no_of_passengers);
 		dto.setTotal_fare(total_fare);
 		dto.setSeat_number(seat_number);
+		dto.setBooking_date(new SimpleDateFormat("dd-MM-yyyy").parse(booking_date));
 		service.bookTicket(dto);
+		booking_id = service.getBookingid();
+		dto.setBooking_id(booking_id);
+		if (booking_id != 0) {
+			service.updateSeats(dto.getFlightno(), dto.getClass_type(), no_of_passengers);
+		}
+		System.out.println("Bookingss Id :" + booking_id);
 	}
 }
