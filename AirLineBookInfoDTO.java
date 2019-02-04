@@ -1,5 +1,7 @@
 package com.cg.airline.beans;
 
+import java.util.Date;
+
 public class AirLineBookInfoDTO {
 	public int getBooking_id() {
 		return booking_id;
@@ -80,7 +82,14 @@ public class AirLineBookInfoDTO {
 	public void setCust_email(String cust_email) {
 		this.cust_email = cust_email;
 	}
+	public Date getBooking_date() {
+		return booking_date;
+	}
 
+	public void setBooking_date(Date booking_date) {
+		this.booking_date = booking_date;
+	}
+	
 	private int booking_id;
 	private int no_of_passengers;
 	private String class_type;
@@ -91,5 +100,6 @@ public class AirLineBookInfoDTO {
 	private String dest_city;
 	private String flightno;
 	private String cust_email;
-
+	private Date booking_date;
+	
 }
