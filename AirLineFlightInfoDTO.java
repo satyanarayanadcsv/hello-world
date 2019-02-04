@@ -51,19 +51,19 @@ public class AirLineFlightInfoDTO {
 		this.arr_date = arr_date;
 	}
 
-	public Date getDept_time() {
+	public String getDept_time() {
 		return dept_time;
 	}
 
-	public void setDept_time(Date dept_time) {
+	public void setDept_time(String dept_time) {
 		this.dept_time = dept_time;
 	}
 
-	public Date getArr_time() {
+	public String getArr_time() {
 		return arr_time;
 	}
 
-	public void setArr_time(Date arr_time) {
+	public void setArr_time(String arr_time) {
 		this.arr_time = arr_time;
 	}
 
@@ -105,8 +105,8 @@ public class AirLineFlightInfoDTO {
 	private String arr_city;
 	private Date dept_date;
 	private Date arr_date;
-	private Date dept_time;
-	private Date arr_time;
+	private String dept_time;
+	private String arr_time;
 	private int first_seats;
 	private double first_seats_fare;
 	private int bus_seats;
